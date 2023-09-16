@@ -2,8 +2,9 @@ version: '3.9'
 
 services:
   web:
-    image: bigmackiller/finaltask:djangodocker
-    command: sh -c "python manage.py migrate && python manage.py createsuperuser --noinput && gunicorn docker_django.wsgi:application --bind 0.0.0.0:8000"
+    image: bigmackiller/finaltask:djadoc
+    # build: ./app
+    command: sh -c "python manage.py collectstatic --noinput && python manage.py migrate && python manage.py createsuperuser --noinput && gunicorn docker_django.wsgi:application --bind 0.0.0.0:8000"
     environment:
       - DJANGO_SUPERUSER_USERNAME=admin
       - DJANGO_SUPERUSER_PASSWORD=admin
@@ -31,7 +32,8 @@ services:
       - POSTGRES_PASSWORD=hello_django
       - POSTGRES_DB=hello_django_dev
   nginx:
-    image: bigmackiller/finaltask:nginx
+    image: bigmackiller/finaltask:nginxx
+    # build: ./nginx
     ports:
       - 1337:80
     depends_on:
