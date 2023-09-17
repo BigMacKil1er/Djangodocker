@@ -9,9 +9,13 @@
 Я работал с помощью docker desktop
 
 Не большая инструкция:
+
 Загрузить файл на свой пк
+
 Из директории в которой находится файл выполнить команду: docker-compose -p <ваше-название> up -d --build
+
 Так как мы используем nginx то перейти по адресу http://localhost:1337/ тут будут работать все статические файлы
+
 Авторизоваться http://localhost:1337/admin/ username: admin password: admin
 
-В docker-compose указаны адреса к dockerhub
+В docker-compose указаны адреса к образам на dockerhub 
