@@ -23,8 +23,14 @@ services:
       - static_volume:/usr/src/app/staticfiles
     ports:
       - 8000:8000
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'python manage.py check'"]
+      interval: 7s
+      timeout: 3s
+      retries: 5
     depends_on:
-      - db
+      db:
+        condition: service_healthy
   db:
     image: postgres:13.0-alpine
     volumes:
@@ -33,6 +39,12 @@ services:
       - POSTGRES_USER=hello_django
       - POSTGRES_PASSWORD=hello_django
       - POSTGRES_DB=hello_django_dev
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U hello_django -d hello_django_dev'"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
   nginx:
     image: bigmackiller/finaltask:nginxx
     # build: ./nginx
@@ -41,7 +53,8 @@ services:
     ports:
       - 1337:80
     depends_on:
-      - web
+      web:
+        condition: service_healthy
 
 volumes:
   postgres_data:
